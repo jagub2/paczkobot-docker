@@ -1,0 +1,3 @@
+[submodule "paczkobot-src"]
+	path = paczkobot-src
+	url = https://github.com/alufers/paczkobot.git

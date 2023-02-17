@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+
+  paczkobot:
+    container_name: paczkobot
+    build:
+      context: ./paczkobot-src
+      args:
+        TARGETPLATFORM: linux/amd64
+        BUILDPLATFORM: linux/amd64
+    volumes:
+      - ./paczkobot-etc:/etc/paczkobot
+    restart: always
+    networks:
+      - paczkobot-net
+    depends_on:
+      - paczkobot-db
+
+  paczkobot-db:
+    container_name: paczkobot-db
+    image: docker.io/library/postgres:14
+    restart: unless-stopped
+    networks:
+      - paczkobot-net
+    volumes:
+      - ./postgresdata:/var/lib/postgresql/data
+      - ./config/sql:/config/sql
+    environment:
+      POSTGRES_DB: gorm
+      POSTGRES_USER: gorm
+      POSTGRES_PASSWORD: gorm
+
+networks:
+  paczkobot-net:
